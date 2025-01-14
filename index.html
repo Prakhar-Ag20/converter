@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Length converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form>
+        <!-- set from and to units -->
+        <label for="from">From:</label>
+        <select id="from"></select>
+        <label for="to">To:</label>
+        <select id="to"></select>
+        <!-- Enter input value to be converted -->
+        <input id="input-value" type="number">
+        <span id="input-unit"></span>
+        <input id="output-value" type="number">
+        <span id="output-unit"></span>
+    </form>
+    <script>
+        const lengthUnits = ['inches', 'feet']; // length units supported in the app
+        const converter = { // object storing conversion factors for the length units
+            feet: {
+                inches: 12,
+                feet: 1
+            },
+            inches: {
+                feet: 1/12,
+                inches: 1
+            }
+        };
+        let conversionFactor; // multiplier to convert input value to output value
+
+        const fromSelect = document.querySelector('#from');
+        const toSelect = document.querySelector('#to');
+        const inputField = document.querySelector('#input-value'); 
+        const outputField = document.querySelector('#output-value'); 
+
+        // populating from and to selector form fields
+        for (let lu of lengthUnits) {
+            const option = document.createElement('option');
+            option.innerText = lu;
+            fromSelect.appendChild(option);
+        }
+        fromSelect.options[0].selected = true;
+        
+        for (let lu of lengthUnits) {
+            const option = document.createElement('option');
+            option.innerHTML = lu;
+            toSelect.appendChild(option);
+        } 
+        toSelect.options[0].selected = true;
+        
+        conversionFactor = converter[fromSelect.value][toSelect.value];
+
+        fromSelect.addEventListener('change', () => {
+            conversionFactor = converter[fromSelect.value][toSelect.value];
+            if (inputField.value)
+              outputField.value = inputField.value * conversionFactor;
+        });
+        
+        toSelect.addEventListener('change', () => {
+            conversionFactor = converter[fromSelect.value][toSelect.value];
+            if (inputField.value)
+              outputField.value = inputField.value * conversionFactor;
+        });
+
+        inputField.addEventListener('input', (e) => {
+            let inputValue = e.target.value;
+            let outputValue = inputValue * conversionFactor;
+            if(outputValue)
+              outputField.value = outputValue;
+            else 
+              outputField.value = "";
+        });         
+    </script>
+</html>
