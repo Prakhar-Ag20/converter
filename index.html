@@ -20,17 +20,25 @@
         <span id="output-unit"></span>
     </form>
     <script>
-        const lengthUnits = ['inches', 'feet']; // length units supported in the app
-        const converter = { // object storing conversion factors for the length units
-            feet: {
-                inches: 12,
-                feet: 1
-            },
-            inches: {
-                feet: 1/12,
-                inches: 1
+        const lengthUnits = ['inches', 'feet', 'centimeters']; // length units supported in the app
+        const inCms = {centimeters: 1, inches: 2.54, feet: 30.48}; // every length unit value in centimeters
+
+        const converter = {}; // object storing conversion factors for the length units
+
+        for (let fromUnit of lengthUnits) {
+            converter[fromUnit] = {};  // for each unit, setting the object storing converters to other units
+            for (let toUnit of Object.keys(inCms)) {
+                if (fromUnit == toUnit)
+                  converter[fromUnit][toUnit] = 1;
+                else if (toUnit == 'centimeters')
+                  converter[fromUnit][toUnit] = inCms[fromUnit]
+                else 
+                  converter[fromUnit][toUnit] = inCms[fromUnit]/inCms[toUnit];
             }
-        };
+        }
+
+        console.log(converter);
+
         let conversionFactor; // multiplier to convert input value to output value
         
         // selecting dom elements
