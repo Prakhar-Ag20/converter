@@ -30,8 +30,6 @@
             for (let toUnit of Object.keys(inCms)) {
                 if (fromUnit == toUnit)
                   converter[fromUnit][toUnit] = 1;
-                else if (toUnit == 'centimeters')
-                  converter[fromUnit][toUnit] = inCms[fromUnit]
                 else 
                   converter[fromUnit][toUnit] = inCms[fromUnit]/inCms[toUnit];
             }
